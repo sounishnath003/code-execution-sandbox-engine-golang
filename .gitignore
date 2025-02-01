@@ -1,0 +1,9 @@
+tmp
+bin
+*.log
+log
+.env
+.env-lock
+.env-prod
+.env-dev
+.dockerconfig
