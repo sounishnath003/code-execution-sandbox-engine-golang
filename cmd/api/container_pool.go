@@ -58,6 +58,7 @@ func InitializeContainerPool(n int) {
 	for i := 1; i <= numWorkers; i++ {
 		wg.Add(1)
 		go worker(i, &wg)
+		fmt.Printf("worker %d has been registered inside container pool\n", i)
 	}
 }
 
