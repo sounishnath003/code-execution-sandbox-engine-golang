@@ -1,0 +1,8 @@
+
+POST http://localhost:3000/api/submit HTTP/1.1
+Content-Type: application/json
+
+{
+    "language": "python3",
+    "base64EncodedCode": "aWYgX19uYW1lX18gPT0gIl9fbWFpbl9fIjoKICAgIHByaW50KCIgR09JTk5ORyBHT09EICIpCiAgICByYWlzZSBFeGNlcHRpb24oIiBOTyBGT09PRENLS0siKQ=="
+}
