@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// pythonCodeRunner used to run the python3 code into the sandbox environment
 func pythonCodeRunner(base64EncodedCodeString string) (string, string, error) {
 	// Prepare the container runtime.
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

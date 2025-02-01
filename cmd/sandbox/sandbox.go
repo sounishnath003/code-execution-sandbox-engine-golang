@@ -9,6 +9,8 @@ func RunCodeInDocker(language, base64EncodedCodeString string) (string, string, 
 	switch language {
 	case "python3":
 		return pythonCodeRunner(base64EncodedCodeString)
+	case "java":
+		return javaCodeRunner(base64EncodedCodeString)
 
 	default:
 		return "", "", errors.New("Language not supported")
