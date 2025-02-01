@@ -13,7 +13,6 @@ func pythonCodeRunner(base64EncodedCodeString string) (string, string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	// cmdString := fmt.Sprintf(`echo "%s" | base64 -d | go run /dev/stdin`, base64EncodedCodeString)
 	cmdString := fmt.Sprintf(`echo "%s" | base64 -d | python3`, base64EncodedCodeString)
 
 	// Run the code inside docker container

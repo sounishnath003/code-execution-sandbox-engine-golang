@@ -6,6 +6,5 @@ type CodeSubmission struct {
 }
 
 type ExecutionResult struct {
-	StdOut string `json:"stdout"`
-	StdErr string `json:"stderr,omitempty"`
+	JobResult JobResult `json:"jobResult"`
 }
