@@ -38,6 +38,8 @@ func javaCodeRunner(base64EncodedCode string) (string, string, error) {
 	dockerfileContent := fmt.Sprintf(`
 		FROM openjdk:11-jdk-slim
 		WORKDIR /app
+        RUN useradd -ms /bin/bash nonroot
+        USER nonroot
 		COPY %s HelloWorld.java
 		ENTRYPOINT ["java", "HelloWorld.java"]
 		`, tempFile.Name())
