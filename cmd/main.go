@@ -11,11 +11,11 @@ import (
 func main() {
 	e := echo.New()
 
-	api.InitializeContainerPool(5)
-	api.JobQueue = make(chan api.Job, 10)
+	api.InitializeContainerPool(25)
+	api.JobQueue = make(chan api.Job, 30)
 
 	// Start the worker pool.
-	numWorkers := 5
+	numWorkers := 24
 	var wg sync.WaitGroup
 	for i := 1; i <= numWorkers; i++ {
 		wg.Add(1)
