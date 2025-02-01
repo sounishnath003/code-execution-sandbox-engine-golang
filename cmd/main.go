@@ -2,35 +2,25 @@ package main
 
 import (
 	"fmt"
-	"sync"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/sounishnath/code-sandbox-runner/cmd/api"
 )
 
 func main() {
 	e := echo.New()
 
-	api.InitializeContainerPool(25)
-	api.JobQueue = make(chan api.Job, 30)
+	// Middleware
+	e.Use(middleware.Gzip())
 
-	// Start the worker pool.
-	numWorkers := 24
-	var wg sync.WaitGroup
-	for i := 1; i <= numWorkers; i++ {
-		wg.Add(1)
-		go api.Worker(i, &wg)
-	}
+	api.InitializeContainerPool(25)
 
 	fmt.Println("server is up and running on http://localhost:3000")
 	e.POST("/api/submit", api.ExecuteCodeHandler)
 
-	// Start the server (in a separate goroutine if you want to wait on workers).
-	go func() {
-		if err := e.Start(":3000"); err != nil {
-			e.Logger.Info("shutting down the server")
-		}
-	}()
+	if err := e.Start(":3000"); err != nil {
+		e.Logger.Info("shutting down the server")
+	}
 
-	wg.Wait()
 }

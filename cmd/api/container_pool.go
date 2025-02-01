@@ -35,6 +35,10 @@ type Container struct {
 // Global container pool (buffered channel)
 var containerPool chan *Container
 
+// Global wait group allows to block a specific code block to
+// allow a set of goroutines to complete execution.
+var wg sync.WaitGroup
+
 // Initialize the container pool with n containers.
 func InitializeContainerPool(n int) {
 	containerPool = make(chan *Container, n)
@@ -44,10 +48,21 @@ func InitializeContainerPool(n int) {
 		container := &Container{ID: fmt.Sprintf("container-%d", i+1)}
 		containerPool <- container
 	}
+	
+	// Initialize the buffer job queue can be replaced by Redis / other Queues
+	JobQueue = make(chan Job, 2*n)
+	wg.Wait()
+
+	// Start the worker pool.
+	numWorkers := 24
+	for i := 1; i <= numWorkers; i++ {
+		wg.Add(1)
+		go worker(i, &wg)
+	}
 }
 
 // worker picks up jobs from the jobQueue.
-func Worker(workerID int, wg *sync.WaitGroup) {
+func worker(workerID int, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for job := range JobQueue {
 		fmt.Printf("Worker %d: Received job %s\n", workerID, job.ID)
